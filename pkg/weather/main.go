@@ -69,21 +69,19 @@ type ErrorResponse struct {
 	Error string `json:"error"`
 }
 
-func GetWeather() (interface{}, error) {
+func GetWeather(locale string) (interface{}, error) {
 	WEATHERAPI_KEY := os.Getenv("WEATHERAPI_KEY")
 	if WEATHERAPI_KEY == "" {
 		err := fmt.Errorf("WEATHERAPI_KEY environment variable not set")
-		log.Println(err)
 		return ErrorResponse{Error: err.Error()}, err
 	}
 
-	city := "Melbourne"
-	url := fmt.Sprintf("http://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=no", WEATHERAPI_KEY, city)
+	url := fmt.Sprintf("http://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=no", WEATHERAPI_KEY, locale)
 
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Println("HTTP request error:", err)
-		return ErrorResponse{Error: "HTTP request error"}, err
+		log.Println("HTTP API request error:", err)
+		return ErrorResponse{Error: "HTTP API request error"}, err
 	}
 	defer resp.Body.Close()
 

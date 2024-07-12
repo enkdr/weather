@@ -8,7 +8,9 @@ import (
 
 func main() {
 
-	resp, err := weather.GetWeather()
+	locale := "Melbourne"
+
+	resp, err := weather.GetWeather(locale)
 	if err != nil {
 		log.Println(err)
 	}
