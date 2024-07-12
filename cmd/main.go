@@ -12,6 +12,8 @@ func main() {
 
 	app := app.NewApp()
 
+	fmt.Println("initialising new app")
+
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 	defer cancel()
 

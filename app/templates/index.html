@@ -5,34 +5,29 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Weather App</title>
-    <link rel="stylesheet" type="text/css" href="static/css/styles.css">
-    <style>
-      body, html {
-          font-family: sans-serif;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="static/css/app.css">
   </head>
   <body>
+
     <div id="app">
       <h1>Weather</h1>
-      <h2>Get weather for ...</h2>
       <ul class="weather-city">
         <li data-city="Melbourne">Melbourne</li>
         <li data-city="Miami">Miami</li>
         <li data-city="London">London</li>
       </ul>
+      
       <div class="weather-info">
         <p><strong>Location:</strong> <span id="location"></span></p>
         <p><strong>Temperature:</strong> <span id="temperature"></span> °C</p>
         <p><strong>Condition:</strong> <span id="condition"></span></p>
         <p><strong>Wind:</strong> <span id="wind"></span> km/h</p>
         <p><strong>Humidity:</strong> <span id="humidity"></span>%</p>
-        <!-- Add more elements as needed -->
+      </div>
+      
     </div>
-    
-    </div>
-    
 
+    
     <script type="text/javascript" src="static/js/app.js"></script>
-    </body>
-  </html>
+  </body>
+</html>
