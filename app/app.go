@@ -2,27 +2,28 @@ package app
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"get-weather/pkg/weather"
 	"html/template"
+	"log"
 	"net/http"
 	"time"
-
-	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/middleware"
 )
 
 type App struct {
-	router    http.Handler
+	server    *http.Server
 	templates *template.Template
+	mux       *http.ServeMux // Replace chi.Mux with http.ServeMux
 }
 
 func NewApp() *App {
-
 	var templatesPath string
 	templatesPath = "app/templates/index.html"
 
 	app := &App{
 		templates: template.Must(template.ParseFiles(templatesPath)),
+		mux:       http.NewServeMux(), // Initialize the ServeMux
 	}
 
 	app.loadRoutes()
@@ -31,52 +32,63 @@ func NewApp() *App {
 }
 
 func (a *App) Start(ctx context.Context) error {
-
-	server := &http.Server{
+	a.server = &http.Server{
 		Addr:    ":8001",
-		Handler: a.router,
+		Handler: a.mux, // Set the ServeMux as the handler
 	}
 
-	fmt.Printf("::: starting server on port %s:::", server.Addr)
-
-	ch := make(chan error, 1)
+	fmt.Printf("::: starting server on port %s:::", a.server.Addr)
 
 	go func() {
-		err := server.ListenAndServe()
+		err := a.server.ListenAndServe()
 		if err != nil {
-			ch <- fmt.Errorf("failed to start server: %w", err)
+			fmt.Printf("failed to start server: %s\n", err)
 		}
-		close(ch)
 	}()
 
 	select {
-	case err := <-ch:
-		return err
 	case <-ctx.Done():
 		timeout, cancel := context.WithTimeout(context.Background(), time.Second*10)
 		defer cancel()
-		return server.Shutdown(timeout)
+		return a.server.Shutdown(timeout)
 	}
-
 }
 
-func (a *App) loadRoutes() *chi.Mux {
-
+func (a *App) loadRoutes() {
 	fs := http.FileServer(http.Dir("app/static"))
 
-	router := chi.NewRouter()
-
-	router.Use(middleware.Logger)
-	router.Handle("/static/*", http.StripPrefix("/static/", fs))
-	router.Route("/", a.homeRoute)
-	a.router = router
-
-	return router
+	a.mux.Handle("/static/", http.StripPrefix("/static/", fs))
+	a.mux.HandleFunc("/", a.homeRoute)
+	a.mux.HandleFunc("GET /weather/{locale}", a.weatherRoute)
 }
 
-func (a *App) homeRoute(router chi.Router) {
-
+func (a *App) homeRoute(w http.ResponseWriter, r *http.Request) {
 	homeHandler := NewHome(a.templates)
-	router.Get("/", homeHandler.HomePage)
+	homeHandler.HomePage(w, r)
+}
 
+func (a *App) weatherRoute(w http.ResponseWriter, r *http.Request) {
+
+	locale := r.PathValue("locale")
+
+	resp, err := weather.GetWeather(locale)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Failed to fetch weather data", http.StatusInternalServerError)
+		return
+	}
+
+	// Marshal the response to JSON
+	jsonResp, err := json.Marshal(resp)
+	if err != nil {
+		log.Println("Failed to marshal JSON response:", err)
+		http.Error(w, "Failed to process weather data", http.StatusInternalServerError)
+		return
+	}
+
+	// Set response headers
+	w.Header().Set("Content-Type", "application/json")
+
+	// Write JSON response to the client
+	w.Write(jsonResp)
 }
