@@ -1,8 +1,13 @@
 package main
 
 import (
+	"context"
+	"fmt"
+	"get-weather/app"
 	"get-weather/pkg/weather"
 	"log"
+	"os"
+	"os/signal"
 )
 
 func main() {
@@ -22,4 +27,18 @@ func main() {
 	} else {
 		log.Println("Unexpected response type")
 	}
+
+	app := app.NewApp()
+
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
+	defer cancel()
+
+	err = app.Start(ctx)
+
+	if err != nil {
+		fmt.Println("failed to start app", err)
+	}
+
+	fmt.Println(app)
+
 }
