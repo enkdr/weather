@@ -10,14 +10,19 @@
   <body>
 
     <div id="app">
-      <h1>Weather</h1>
-      <ul class="weather-city">
-        <li data-city="Melbourne">Melbourne</li>
-        <li data-city="Miami">Miami</li>
-        <li data-city="London">London</li>
-      </ul>
+      <h1>Add Weather Component</h1>
+
+      <form class="weather-form">
+        <select name="city" id="city">
+          <option  value="Melbourne">Melbourne</option>
+          <option  value="London">London</option>
+          <option  value="Miami">Miami</option>
+        </select>
+        <button type="submit">Submit</button>
+      </form>
       
       <div class="weather-info">
+        <h2>Choose a city</h2>
         <p><strong>Location:</strong> <span id="location"></span></p>
         <p><strong>Temperature:</strong> <span id="temperature"></span> °C</p>
         <p><strong>Condition:</strong> <span id="condition"></span></p>
