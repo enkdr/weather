@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"get-weather/pkg/weather"
 	"log"
 )
@@ -17,10 +16,10 @@ func main() {
 
 	// using type assertion to check if the response is of type WeatherResponse or ErrorResponse
 	if weatherResp, ok := resp.(weather.WeatherResponse); ok {
-		fmt.Println(weather.PrettyPrint(weatherResp))
+		log.Println(weather.PrettyPrint(weatherResp))
 	} else if errorResp, ok := resp.(weather.ErrorResponse); ok {
-		fmt.Println(weather.PrettyPrint(errorResp))
+		log.Println(weather.PrettyPrint(errorResp))
 	} else {
-		fmt.Println("Unexpected response type")
+		log.Println("Unexpected response type")
 	}
 }
