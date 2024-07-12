@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 
@@ -64,36 +65,39 @@ type WeatherResponse struct {
 	} `json:"current"`
 }
 
-func GetWeather() WeatherResponse {
+type ErrorResponse struct {
+	Error string `json:"error"`
+}
 
+func GetWeather() (interface{}, error) {
 	WEATHERAPI_KEY := os.Getenv("WEATHERAPI_KEY")
+	if WEATHERAPI_KEY == "" {
+		err := fmt.Errorf("WEATHERAPI_KEY environment variable not set")
+		log.Println(err)
+		return ErrorResponse{Error: err.Error()}, err
+	}
 
 	city := "Melbourne"
 	url := fmt.Sprintf("http://api.weatherapi.com/v1/current.json?key=%s&q=%s&aqi=no", WEATHERAPI_KEY, city)
 
-	fmt.Println(url)
-
 	resp, err := http.Get(url)
-
-	defer resp.Body.Close()
-
 	if err != nil {
-		fmt.Println(err)
+		log.Println("HTTP request error:", err)
+		return ErrorResponse{Error: "HTTP request error"}, err
 	}
+	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("cannot ReadAll body", err)
+		log.Println("ReadAll error:", err)
+		return ErrorResponse{Error: "Error reading response body"}, err
 	}
 
 	var w WeatherResponse
-
 	if err := json.Unmarshal(body, &w); err != nil {
-		fmt.Println("cannot unmarsahll json", err)
+		log.Println("Unmarshal error:", err)
+		return ErrorResponse{Error: "Error parsing JSON response"}, err
 	}
 
-	fmt.Println(PrettyPrint(w))
-
-	return w
-
+	return w, nil
 }
