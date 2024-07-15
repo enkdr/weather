@@ -10,29 +10,34 @@
   <body>
 
     <div id="app">
-      <h1>Add Weather Component</h1>
+      <h1>Add Weather Components</h1>
 
       <form class="weather-form">
         <select name="city" id="city">
-          <option  value="Melbourne">Melbourne</option>
-          <option  value="London">London</option>
-          <option  value="Miami">Miami</option>
+          <option value="Melbourne">Melbourne</option>
+          <option value="London">London</option>
+          <option value="Miami">Miami</option>
         </select>
-        <button type="submit">Submit</button>
+        <button type="submit">Update</button>
       </form>
       
       <div class="weather-info">
         <h2>Choose a city</h2>
-        <p><strong>Location:</strong> <span id="location"></span></p>
         <p><strong>Temperature:</strong> <span id="temperature"></span> °C</p>
         <p><strong>Condition:</strong> <span id="condition"></span></p>
         <p><strong>Wind:</strong> <span id="wind"></span> km/h</p>
         <p><strong>Humidity:</strong> <span id="humidity"></span>%</p>
       </div>
+
+      <div class="weather-blocks">
+
+      </div>
+
       
     </div>
 
     
     <script type="text/javascript" src="static/js/app.js"></script>
+    <script type="module" src="static/js/weather-block.js"></script>
   </body>
 </html>

@@ -1,9 +1,10 @@
-console.log("Weather API")
+console.log("Weather API");
 
 document.addEventListener("DOMContentLoaded", function () {
 
     const weatherForm = document.querySelector(".weather-form");
     const weatherInfo = document.querySelector(".weather-info");
+    const weatherBlocks = document.querySelector(".weather-blocks");
 
     weatherForm.addEventListener("submit", function (event) {
         event.preventDefault();
@@ -19,9 +20,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     <p><strong>Condition:</strong> ${data.current.condition.text}</p>
                     <p><strong>Wind:</strong> ${data.current.wind_kph} km/h</p>
                     <p><strong>Humidity:</strong> ${data.current.humidity}%</p>
+                    <button id="add-weather-block">Add Weather Block</button>
                 `;
-            })
-    });
 
+                // Add event listener for the "add weather block" button
+                const addButton = document.getElementById("add-weather-block");
+                addButton.addEventListener("click", function () {
+                    const weatherBlock = document.createElement('weather-block');
+                    weatherBlock.data = data;
+                    weatherBlocks.appendChild(weatherBlock);
+                });
+            });
+    });
 
 });
