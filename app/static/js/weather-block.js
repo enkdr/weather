@@ -1,7 +1,7 @@
 export default customElements.define('weather-block', class extends HTMLElement {
 
     constructor() {
-        super();        
+        super();
         this.attachShadow({mode: 'open'});
     }
 
@@ -18,9 +18,10 @@ export default customElements.define('weather-block', class extends HTMLElement 
         if (!this._data) return;
 
         this.shadowRoot.innerHTML = `
-            <style>
-            </style>
-            <div>
+<style>
+ @import url("/static/css/app.css");
+</style>
+            <div class="weather-block">
                 <h2>${this._data.location.name}, ${this._data.location.country}</h2>
                 <p><strong>Temperature:</strong> ${this._data.current.temp_c} °C</p>
                 <p><strong>Condition:</strong> ${this._data.current.condition.text}</p>
@@ -33,10 +34,6 @@ export default customElements.define('weather-block', class extends HTMLElement 
         const removeBtn = this.shadowRoot.querySelector('.remove-weather-block');
         removeBtn.addEventListener('click', () => {
             this.remove();
-        });            
-        
+        });
     }
-    
 });
-
-

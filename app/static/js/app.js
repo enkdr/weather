@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     weatherForm.addEventListener("submit", function (event) {
         event.preventDefault();
         const city = event.target.elements.city.value;
-        console.log(city);
+        if (! city) return;
         fetch(`/weather/${city}`)
             .then(response => response.json())
             .then(data => {
@@ -26,9 +26,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Add event listener for the "add weather block" button
                 const addButton = document.getElementById("add-weather-block");
                 addButton.addEventListener("click", function () {
+                    // add a weather-block web component
                     const weatherBlock = document.createElement('weather-block');
                     weatherBlock.data = data;
                     weatherBlocks.appendChild(weatherBlock);
+                    addButton.disabled = true;
                 });
             });
     });

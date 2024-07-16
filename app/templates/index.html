@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Weather App</title>
-    <link rel="stylesheet" type="text/css" href="static/css/app.css">
-  </head>
-  <body>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Weather App</title>
+  <link rel="stylesheet" type="text/css" href="static/css/app.css">
+</head>
+<body>
 
-    <div id="app">
-      <h1>Add Weather Components</h1>
+<div id="app">
+  <h1>Add Weather Components</h1>
 
+  <content>
+
+    <div class="row">
       <form class="weather-form">
         <select name="city" id="city">
+          <option value="">Choose a city</option>
           <option value="Melbourne">Melbourne</option>
           <option value="London">London</option>
           <option value="Miami">Miami</option>
@@ -21,23 +25,16 @@
         <button type="submit">Update</button>
       </form>
       
-      <div class="weather-info">
-        <h2>Choose a city</h2>
-        <p><strong>Temperature:</strong> <span id="temperature"></span> °C</p>
-        <p><strong>Condition:</strong> <span id="condition"></span></p>
-        <p><strong>Wind:</strong> <span id="wind"></span> km/h</p>
-        <p><strong>Humidity:</strong> <span id="humidity"></span>%</p>
-      </div>
-
-      <div class="weather-blocks">
-
-      </div>
-
-      
+      <div class="weather-info"></div>
     </div>
-
     
-    <script type="text/javascript" src="static/js/app.js"></script>
-    <script type="module" src="static/js/weather-block.js"></script>
-  </body>
+    <div class="weather-blocks row"></div>
+
+  </content>
+  
+</div>
+
+<script type="text/javascript" src="static/js/app.js"></script>
+<script type="module" src="static/js/weather-block.js"></script>
+</body>
 </html>
