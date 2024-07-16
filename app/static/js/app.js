@@ -4,8 +4,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const weatherForm = document.querySelector(".weather-form");
     const weatherInfo = document.querySelector(".weather-info");
-    const weatherBlocks = document.querySelector(".weather-blocks");
-
+    const weatherBlocks = document.querySelector(".weather-blocks");    
+    const selectCity = weatherForm.querySelector("#city");
+    const cityArray = ["Melbourne", "London", "Miami", "Berlin","Madrid","Accra"];
+    
+    // Loop through the cityArray and create <option> elements
+    cityArray.forEach(city => {
+        const option = document.createElement("option");
+        option.value = city; // Set the value attribute
+        option.textContent = city; // Set the text content
+        selectCity.appendChild(option); // Append the option to the select element
+    });    
+    
     weatherForm.addEventListener("submit", function (event) {
         event.preventDefault();
         const city = event.target.elements.city.value;
